@@ -10,3 +10,10 @@
 */x64
 */x86
 */build
+
+#Ignore html files and its related files
+*.html
+*_files
+
+#Ignore hidden vs folder
+.vs

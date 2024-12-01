@@ -16,6 +16,7 @@ namespace Common {
 
             while (getline(inputfile, tp)) {
                 inputData += tp;
+                inputData += '\n';
             }
         }
         return inputData;
