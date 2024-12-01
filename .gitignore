@@ -24,3 +24,6 @@
 
 #Ignore hidden vs folder
 .vs
+
+#Ignore properties file
+*.props

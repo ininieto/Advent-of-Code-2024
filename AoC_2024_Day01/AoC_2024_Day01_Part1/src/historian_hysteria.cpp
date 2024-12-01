@@ -15,7 +15,7 @@
 #include "common.h"
 
 // Function to store the input data in vectors
-void fillVectors(std::string input, std::vector<int>& vec1, std::vector<int>& vec2) {
+void fillVectors(std::string input, std::vector<int> &vec1, std::vector<int> &vec2) {
 
     std::string line;
     size_t pos = 0;
@@ -43,8 +43,8 @@ void fillVectors(std::string input, std::vector<int>& vec1, std::vector<int>& ve
 int main(){
 
     // Store the example and input in a string
-    std::string example = Common::readInputText("resources/example.txt");
-    std::string input = Common::readInputText("resources/input.txt");
+    std::string example = Common::readInputText("../resources/example.txt");
+    std::string input = Common::readInputText("../resources/input.txt");
 
     // Store the first column in a vector and the second one in another
     std::vector<int> vec1, vec2;
