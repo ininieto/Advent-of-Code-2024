@@ -40,8 +40,8 @@ void fillVectors(std::string input, std::vector<int>& vec1, std::vector<int>& ve
     }
 }
 
-int main()
-{
+int main(){
+
     // Store the example and input in a string
     std::string example = Common::readInputText("resources/example.txt");
     std::string input = Common::readInputText("resources/input.txt");

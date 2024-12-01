@@ -11,6 +11,13 @@
 */x86
 */build
 
+*/*/Debug
+*/*/Release
+*/*/x64
+*/*/x86
+*/*/build
+
+
 #Ignore html files and its related files
 *.html
 *_files
