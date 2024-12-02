@@ -5,6 +5,6 @@
 
 namespace Common {
 
-	std::string readInputText(std::string inputText);
-	std::vector<std::string> split(std::string text, std::string delim);
+	std::string readInputText(const std::string &inputText);
+	std::vector<std::string> split(std::string text, const std::string &delim);
 }

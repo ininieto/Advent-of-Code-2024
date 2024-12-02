@@ -5,7 +5,7 @@
 namespace Common {
 
     // Read input data from txt file
-    std::string readInputText(std::string inputText) {
+    std::string readInputText(const std::string &inputText) {
 
         std::fstream inputfile;
         std::string inputData;
@@ -23,7 +23,7 @@ namespace Common {
     }
 
     // Function to split a std::string by a specific delimitator
-    std::vector<std::string> split(std::string text, std::string delim) {
+    std::vector<std::string> split(std::string text, const std::string &delim) {
 
         std::vector<std::string> splittedText;
         size_t pos = 0;
