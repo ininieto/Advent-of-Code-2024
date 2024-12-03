@@ -3,7 +3,7 @@
 
     Link to the problem: https://adventofcode.com/2024/day/2
 
-    Author of the solution: ��igo Nieto Cuadrado
+    Author of the solution: Inigo Nieto Cuadrado
 
 */
 
