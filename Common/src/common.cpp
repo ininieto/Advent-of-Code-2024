@@ -40,4 +40,35 @@ namespace Common {
 
         return splittedText;
     }
+
+    // Function to get automatically the number of rows and columns
+    void getGridDimensions(const std::string& input, int& nrows, int& ncols) {
+
+        for (int i = 0; i < input.length(); i++) {
+            if (input[i] == '\n' && ncols == 0)
+                ncols = i;
+            if (input[i] == '\n' && ncols > 0)
+                nrows++;
+        }
+        //nrows ++;   // We must apply this correction
+    }
+
+    // Function to fill in the grid
+    void fillGrid(std::vector<std::vector<char>>& grid, const std::string& input) {
+
+        int nrows = grid.size(), ncols = grid[0].size();
+
+        int strCounter = 0;
+
+        for (int i = 0; i < nrows; i++) {
+            for (int j = 0; j < ncols; j++) {
+
+                if (input[strCounter] == '\n')
+                    strCounter++;
+
+                grid[i][j] = input[strCounter];
+                strCounter++;
+            }
+        }
+    }
 }
