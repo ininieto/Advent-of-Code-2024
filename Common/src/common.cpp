@@ -42,7 +42,7 @@ namespace Common {
     }
 
     // Function to get automatically the number of rows and columns
-    void getGridDimensions(const std::string& input, int& nrows, int& ncols) {
+    void getGridDimensions(const std::string& input, size_t& nrows, size_t& ncols) {
 
         for (int i = 0; i < input.length(); i++) {
             if (input[i] == '\n' && ncols == 0)
