@@ -1,7 +1,7 @@
 /*
-	Advent of Code 2024 - 06.12.2024
+	Advent of Code 2024 - 07.12.2024
 
-	Link to the problem: https://adventofcode.com/2024/day/6
+	Link to the problem: https://adventofcode.com/2024/day/7
 
 	Author of the solution: Inigo Nieto Cuadrado
 
