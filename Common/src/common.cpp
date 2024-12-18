@@ -71,4 +71,9 @@ namespace Common {
             }
         }
     }
+
+    // Function to check if a position (i, j) is out of bounds
+    bool outOfBounds(Coords& pos, const size_t nrows, const int ncols) {
+        return pos.i < 0 || pos.i >= nrows || pos.j < 0 || pos.j >= ncols;
+    }
 }
