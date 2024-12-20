@@ -136,7 +136,6 @@ int main() {
 												 Coords(pos.i, pos.j - 1) ,		// Left
 												 Coords(pos.i, pos.j + 1) };	// Right
 
-
 			for (auto& s : surroundings) {
 				if (Common::outOfBounds(s, nrows, ncols) || grid[s.i][s.j].id != plant->id)
 					perim[region[0]->id]++;
