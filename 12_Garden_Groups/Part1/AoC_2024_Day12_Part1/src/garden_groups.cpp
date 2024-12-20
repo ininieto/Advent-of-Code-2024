@@ -12,14 +12,6 @@ Author of the solution : Inigo Nieto Cuadrado
 #include <iostream>
 #include <unordered_map>
 
-/*
-	Problem: I need to distinguish areas of plants, not all the plants of the same type.
-
-	I guess I will need to create a struct Tile and make it have a boolean "visited" or something similar, so to 
-	gather all the areas. Plus, I won't use the letters to group them in the hashmap, I will need to use numerical IDs
-
-*/
-
 // Function to fill in the grid
 void fillGrid(std::vector<std::vector<Tile>>& grid, const std::string& input) {
 
