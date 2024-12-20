@@ -73,7 +73,28 @@ namespace Common {
     }
 
     // Function to check if a position (i, j) is out of bounds
-    bool outOfBounds(Coords& pos, const size_t nrows, const int ncols) {
+    bool outOfBounds(const Coords& pos, const size_t nrows, const size_t ncols) {
         return pos.i < 0 || pos.i >= nrows || pos.j < 0 || pos.j >= ncols;
+    }
+
+    std::vector<Coords> getSurroundings(Coords& pos, const size_t nrows, const size_t ncols) {
+
+        std::vector<Coords> surroundings;
+
+        Coords up = Coords(pos.i - 1, pos.j);
+        Coords down = Coords(pos.i + 1, pos.j);
+        Coords left = Coords(pos.i, pos.j - 1);
+        Coords right = Coords(pos.i, pos.j + 1);
+
+        if (!outOfBounds(up, nrows, ncols))
+            surroundings.push_back(up);
+        if (!outOfBounds(down, nrows, ncols))
+            surroundings.push_back(down);
+        if (!outOfBounds(left, nrows, ncols))
+            surroundings.push_back(left);
+        if (!outOfBounds(right, nrows, ncols))
+            surroundings.push_back(right);
+
+        return surroundings;
     }
 }
