@@ -7,8 +7,6 @@ Author of the solution : Inigo Nieto Cuadrado
 
 */
 
-/* 26661 is too low */
-
 #include "claw_contraption.h"
 
 #include <iostream>
