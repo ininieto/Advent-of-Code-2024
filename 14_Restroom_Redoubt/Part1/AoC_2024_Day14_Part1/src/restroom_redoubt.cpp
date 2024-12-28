@@ -45,17 +45,18 @@ void updateRobot(Robot& robot, const size_t nrows, const size_t ncols){
 	robot.pos.j += robot.v.j;
 
 	if (robot.pos.i < 0) 
-		robot.pos.i = nrows + robot.pos.i;
+		robot.pos.i = (int)nrows + robot.pos.i;
 	
 	if (robot.pos.i >= nrows)
-		robot.pos.i -= nrows;
+		robot.pos.i -= (int)nrows;
 	
 	if (robot.pos.j < 0)
-		robot.pos.j = ncols + robot.pos.j;
+		robot.pos.j = (int)ncols + robot.pos.j;
 
 	if (robot.pos.j >= ncols)
-		robot.pos.j -= ncols;
+		robot.pos.j -= (int)ncols;
 }
+
 
 int main() {
 
@@ -91,7 +92,6 @@ int main() {
 
 	// Count the robots per quadrant (q1 up-left, q2 up-right, q3 bottom-left, q4 bottom-right)
 	uint64_t q1 = 0, q2 = 0, q3 = 0, q4 = 0;
-	uint64_t solution = 0;
 
 	for (const auto& robot : robots) {
 
@@ -105,9 +105,10 @@ int main() {
 			q4++;
 	}
 
+	uint64_t solution = 0;
 	solution = q1 * q2 * q3 * q4;
 
-	std::cout << solution;
+	std::cout << solution << '\n';
 
 	return 0;
 }
