@@ -1,6 +1,7 @@
 #include "common.h"
 
 #include <fstream>
+#include <iostream>
 
 namespace Common {
 
@@ -96,5 +97,16 @@ namespace Common {
             surroundings.push_back(right);
 
         return surroundings;
+    }
+
+    // Function to print a grid
+    void printGrid(const std::vector<std::vector<char>>& grid){
+
+        for (const auto& row : grid) {
+            for (const auto& c : row) 
+                std::cout << c;
+            std::cout << '\n';
+        }
+        std::cout << "\n\n";
     }
 }
