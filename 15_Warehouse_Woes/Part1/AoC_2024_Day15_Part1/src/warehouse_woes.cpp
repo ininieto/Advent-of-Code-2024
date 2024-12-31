@@ -44,7 +44,7 @@ void move(Coords& pos, Coords dir, std::vector<std::vector<char>>& grid){
 		}
 
 		// Move the elements from last to first
-		for (int i = numBalls + 1; i > 0; i--) {
+		for (int i = numBalls; i >= 0; i--) {
 
 			Coords currentPos(nextPos.i - dir.i, nextPos.j - dir.j);
 

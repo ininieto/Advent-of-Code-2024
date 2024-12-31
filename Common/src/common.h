@@ -11,6 +11,11 @@ struct Coords {
 
 	// Constructor
 	Coords(int i, int j) : i(i), j(j) {};
+
+	// Equality operator for comparison
+	bool operator==(const Coords& other) const {
+		return i == other.i && j == other.j;
+	}
 };
 
 namespace Common {
