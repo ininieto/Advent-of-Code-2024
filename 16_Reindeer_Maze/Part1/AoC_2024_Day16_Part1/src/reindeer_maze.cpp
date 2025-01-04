@@ -7,154 +7,83 @@ Author of the solution : Inigo Nieto Cuadrado
 
 */
 
-/* 105512 is too high */
-
 #include "reindeer_maze.h"
 
 #include <iostream>
+#include <queue>
+#include <unordered_set>
 
-// Function to fill in the grid
-void fillGrid(std::vector<std::vector<Tile>>& grid, const std::string& input) {
-
-	size_t nrows = grid.size(), ncols = grid[0].size();
-
-	int strCounter = 0;
-
-	for (int i = 0; i < nrows; i++) {
-		for (int j = 0; j < ncols; j++) {
-
-			if (input[strCounter] == '\n')
-				strCounter++;
-
-			grid[i][j] = Tile(Coords(i, j), input[strCounter]);
-			strCounter++;
-		}
-	}
-}
-
-// Debug function to print the grid
-void printGrid(const std::vector<std::vector<Tile>>& grid) {
-
-	for (const auto& row : grid) {
-		for (const auto& c : row) {
-			std::cout << c.c;
-		}
-		std::cout << '\n';
-	}
-}
-
-// Function that returns true if a Tile* is already in the queue
-bool isQueued(std::priority_queue<Tile*, std::vector<Tile*>, CompareDist>& pq, const Tile* tile) {
-
-	auto copy = pq;	// Create a copy of the queue
-	while (!copy.empty()) {
-		if (copy.top() == tile)
-			return true;
-		copy.pop();
-	}
-	return false;
-}
+#include "common.h"
 
 
 int main() {
 
-	// Read the input
-	std::string example = Common::readInputText("../../resources/example.txt");
-	std::string example2 = Common::readInputText("../../resources/example2.txt");
-	std::string input = Common::readInputText("../../resources/input.txt");
+    // Read the input
+    std::string example = Common::readInputText("../../resources/example.txt");
+    std::string example2 = Common::readInputText("../../resources/example2.txt");
+    std::string input = Common::readInputText("../../resources/input.txt");
 
-	// Work with example
-	// input = example2;
+    // Work with example
+    // input = example2;
 
-	// Define a grid
-	size_t nrows = 0, ncols = 0;
-	Common::getGridDimensions(input, nrows, ncols);
+    // Define a grid
+    size_t nrows = 0, ncols = 0;
+    Common::getGridDimensions(input, nrows, ncols);
 
-	std::vector<std::vector<Tile>> grid(nrows, std::vector<Tile>(ncols));
-	fillGrid(grid, input);
+    std::vector<std::vector<char>> grid(nrows, std::vector<char>(ncols));
+    Common::fillGrid(grid, input);
 
-	// Find the starting and ending position
-	Coords startPos, endPos;
+    // Define all the possible directions
+    const std::vector<Coords> directions = { {0, 1}, {1, 0}, {0, -1}, {-1, 0} }; // East, South, West, North
 
-	for (int i = 0; i < nrows; i++) {
-		for (int j = 0; j < ncols; j++) {
-			if (grid[i][j].c == 'S')
-				startPos = Coords(i, j);
-			else if (grid[i][j].c == 'E')
-				endPos = Coords(i, j);
+    // Find the starting and ending position
+    Coords startPos, endPos;
+    for (int i = 0; i < nrows; ++i) {
+        for (int j = 0; j < ncols; ++j) {
+            if (grid[i][j] == 'S') {
+                startPos = { i, j };
+            }
+            else if (grid[i][j] == 'E') {
+                endPos = { i, j };
+            }
+        }
+    }
 
-			if (startPos.i > -1 && endPos.i > -1)
-				break;
-		}
-	}
+    // Priority queue for Dijkstra
+    std::priority_queue<Tile> pq;
+    pq.push({ startPos, 0, 0 }); // Start facing East with 0 cost
 
-	// As there are Walls surrounding the Maze, we don't need to check for out of bounds
+    // Visited states (i, j, dir)
+    std::unordered_set<std::string> visited;
 
+    Tile currentTile;
 
-	// Define a Dijkstra to scan all the possible paths to the end
-	std::priority_queue<Tile*, std::vector<Tile*>, CompareDist> nextTiles;
-	grid[startPos.i][startPos.j].dist = 0;
-	nextTiles.push(&grid[startPos.i][startPos.j]);	// Add the starting position to the queue
+    while (!pq.empty()) {
 
-	Coords currentDir(0, 1);	// Starting direction is East
+        currentTile = pq.top();
+        pq.pop();
 
-	
-	while (!nextTiles.empty()) {
+        // Generate a unique state identifier
+        std::string stateId = std::to_string(currentTile.pos.i) + "," + std::to_string(currentTile.pos.j) + "," + std::to_string(currentTile.dir);
 
-		Tile* currentTile = nextTiles.top();	// Get the first element of the queue
-		nextTiles.pop();						// Erase it from the queue
+        // Skip if already visited
+        if (visited.count(stateId)) continue;
+        visited.insert(stateId);
 
-		if (currentTile->c == 'E') {
-			break;
-		}
+        // Check if we've reached the end
+        if (currentTile.pos == endPos)
+            break;
 
-		// Update the current direction
-		if (currentTile->prevTile != nullptr)
-			currentDir = Coords(currentTile->pos.i - currentTile->prevTile->pos.i, currentTile->pos.j - currentTile->prevTile->pos.j);
+        // Try moving forward
+        Coords nextPos = { currentTile.pos.i + directions[currentTile.dir].i, currentTile.pos.j + directions[currentTile.dir].j };
+        if (grid[nextPos.i][nextPos.j] != '#')
+            pq.push({ nextPos, currentTile.dir, currentTile.dist + 1 });
 
-		// Debug
-		// std::cout << "\nCurrent position: (" << currentTile->pos.i << ", " << currentTile->pos.j << "). Distance: " << currentTile->dist << "\n";
-		// currentTile->c = 'X';
-		// printGrid(grid);
+        // Try rotating clockwise and counterclockwise
+        pq.push({ {currentTile.pos.i, currentTile.pos.j}, (currentTile.dir + 1) % 4, currentTile.dist + 1000 });
+        pq.push({ {currentTile.pos.i, currentTile.pos.j}, (currentTile.dir + 3) % 4, currentTile.dist + 1000 });
+    }
 
-		currentTile->visited = true;	// Set the current Tile as visited
-
-		std::vector<Coords> surroundings = Common::getSurroundings(currentTile->pos, nrows, ncols);
-
-		for (const auto& s : surroundings) {
-			Tile* surroundingTile = &grid[s.i][s.j];
-
-			// For each surrounding, check if they are eligible to jump onto
-			//if (surroundingTile->c != '#' && !surroundingTile->visited && !isQueued(nextTiles, surroundingTile)) {
-			if (surroundingTile->c != '#' && !surroundingTile->visited) {
-
-				Coords dir(surroundingTile->pos.i - currentTile->pos.i, surroundingTile->pos.j - currentTile->pos.j);
-				int scoreIncrease = (dir == currentDir) ? 1 : 1001;			// Straight step increases 1, turning 90º increases 1 + 1000
-
-				if (currentTile->dist + scoreIncrease < surroundingTile->dist) {
-					surroundingTile->dist = currentTile->dist + scoreIncrease;
-					surroundingTile->prevTile = currentTile;
-					nextTiles.push(surroundingTile);
-				}
-
-			}
-		}
-	}
-
-
-	// Print the path to the end
-	Tile* tile = &grid[endPos.i][endPos.j];
-
-	std::cout << tile->dist << "\n\n";
-
-	while (tile->prevTile != nullptr) {
-		tile->c = 'X';
-		tile = tile->prevTile;
-	}
-
-	printGrid(grid);
-
-	return 0;
+    std::cout << "Lowest score: " << currentTile.dist << '\n';
+    return 0;
 }
-
-
