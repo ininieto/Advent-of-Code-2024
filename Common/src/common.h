@@ -16,6 +16,11 @@ struct Coords {
 	bool operator==(const Coords& other) const {
 		return i == other.i && j == other.j;
 	}
+
+	// Inequality operator
+	bool operator!=(const Coords& other) const {
+		return i != other.i || j != other.j;
+	}
 };
 
 namespace Common {
