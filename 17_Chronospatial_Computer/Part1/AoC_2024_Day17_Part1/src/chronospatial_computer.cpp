@@ -33,10 +33,11 @@ int main() {
 
     // Read the input
     std::string example = Common::readInputText("../../resources/example.txt");
+    std::string example2 = Common::readInputText("../../resources/example_2.txt");
     std::string input = Common::readInputText("../../resources/input.txt");
 
     // Work with example
-    // input = example;
+    input = example2;
 
     // Define the variables for the registers
     uint64_t regA, regB, regC;
