@@ -11,6 +11,7 @@ Author of the solution : Inigo Nieto Cuadrado
 
 #include <iostream>
 #include <sstream>
+#include <queue>
 #include <unordered_set>
 
 #include "common.h"
@@ -50,7 +51,7 @@ int main() {
     std::string input = Common::readInputText("../../resources/input.txt");
 
     // Work with example
-    const bool useExample = true;  // Set to false for real problem
+    const bool useExample = false;  // Set to false for real problem
 
     if (useExample)
         input = example;
@@ -69,10 +70,10 @@ int main() {
     for (const auto& design : designs) {
 
         // Debug
-        std::cout << "---------------------- Current design: " << design << "-------------------------------\n";
+        std::cout << "---------------------- Current design: " << design << " -------------------------------\n";
 
-        // Define a vector with the candidates
-        std::vector<std::string> candidates;
+        // Define a priority queue to store the candidates. The longest candidate will be on top
+        std::priority_queue<std::string, std::vector<std::string>, CompareByLength> candidates;
 
         // Define a set with the already tested patterns
         std::unordered_set<std::string> visitedCandidates;
@@ -85,70 +86,57 @@ int main() {
             std::string sub = design.substr(0, tileSize);
 
             if (tile == sub)
-                candidates.push_back(tile);
+                candidates.push(tile);
         }
 
         // If there are no candidates, skip
         if (candidates.empty())
             continue;
 
-        bool designFound = false;
+        // Iterate all the candidates
+        while (!candidates.empty()) {
 
-        // Now we have the first candidates. We need to work just with these candidates
-        while (!designFound) {
+            // Extract the first candidate on the queue
+            std::string candidate = candidates.top();
+            candidates.pop();
 
-            // With all the candidates, try with all the tiles
-            for (int i = 0; i < candidates.size(); i++) {
+            // Debug
+            std::cout << "Current candidate : " << candidate << '\n';
 
-                std::string candidate = candidates[i];
+            // If already visited candidate, skip
+            if (visitedCandidates.count(candidate))  continue;
+            visitedCandidates.insert(candidate);
 
-                // If already visited candidate, skip
-                if (visitedCandidates.count(candidate))  continue;
-                visitedCandidates.insert(candidate);
+            bool designFound = false;
 
-                // Debug
-                std::cout << "Current candidate : " << candidate << '\n';
+            for (const auto& tile : tiles) {
 
-                // bool newCandidateFound = false;
+                // Get the next substr of the number of chars of the tile
+                int tileSize = tile.size();
+                std::string sub = design.substr(candidate.size(), tileSize);
 
-                for (const auto& tile : tiles) {
+                // If the substr is equal than the tile, add a new candidate
+                if (sub == tile) {
+                    // newCandidateFound = true;
+                    std::string newCandidate = candidate + tile;
 
-                    // Get the next substr of the number of chars of the tile
-                    int tileSize = tile.size();
-                    std::string sub = design.substr(candidate.size(), tileSize);
-
-                    // If the substr is equal than the tile, add a new candidate
-                    if (sub == tile) {
-                        // newCandidateFound = true;
-                        std::string newCandidate = candidate + tile;
-
-                        if (newCandidate == design) {
-                            designFound = true;
-                            break;
-                        }
-                        candidates.push_back(newCandidate);
+                    if (newCandidate == design) {
+                        designFound = true;
+                        break;
                     }
+                    candidates.push(newCandidate);
                 }
-
-                // If design found, break
-                if (designFound) {
-                    possibleDesigns++;
-                    break;
-                }
-
-                // Delete the current candidate and decrease the index
-                candidates.erase(candidates.begin() + i);
-                i--;
             }
 
-            // If we reach here, it means the design is not possible
-            break;
+            // If design found, break
+            if (designFound) {
+                possibleDesigns++;
+                break;
+            }
         }
     }
-
     
     std::cout << possibleDesigns << '\n';
-	
 
 	return 0;
 }
