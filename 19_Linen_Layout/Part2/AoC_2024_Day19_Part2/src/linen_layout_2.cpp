@@ -7,9 +7,6 @@ Author of the solution : Inigo Nieto Cuadrado
 
 */
 
-// 659 is too low
-// 18446744056295832629 is too high
-
 #include "linen_layout_2.h"
 
 #include <iostream>
